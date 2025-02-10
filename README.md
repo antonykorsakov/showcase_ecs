@@ -1,1 +1,2 @@
-# showcase_ecs
+IN PROGRESS!!!
+version 0.0.1
