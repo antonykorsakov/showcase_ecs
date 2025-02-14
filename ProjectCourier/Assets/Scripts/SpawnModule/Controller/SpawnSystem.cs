@@ -97,7 +97,7 @@ namespace SpawnModule.Controller
 
                         switch (_counter2)
                         {
-                            case >= 2:
+                            case >= 1:
                                 _spawnState |= 0b010;
                                 break;
                         }
