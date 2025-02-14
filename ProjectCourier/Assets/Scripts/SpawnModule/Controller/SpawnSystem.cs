@@ -130,7 +130,22 @@ namespace SpawnModule.Controller
             ecb.Dispose();
 
             if (_spawnState == 0b111)
+            {
                 state.Enabled = false;
+                // MyDebug(ref state);
+            }
+        }
+
+        private void MyDebug(ref SystemState state)
+        {
+            var query = state.EntityManager.CreateEntityQuery(typeof(InteractableTag));
+            var cars = query.ToEntityArray(Allocator.Temp);
+            foreach (var car in cars)
+            {
+                // Debug.LogError($"Interactable Car: ID = {car.Index}, Version = {car.Version}");
+            }
+
+            cars.Dispose();
         }
     }
 }
