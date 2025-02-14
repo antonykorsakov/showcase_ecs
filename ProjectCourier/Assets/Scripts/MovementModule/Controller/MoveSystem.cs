@@ -11,10 +11,15 @@ namespace MovementModule.Controller
         public void OnUpdate(ref SystemState state)
         {
             var deltaTime = SystemAPI.Time.DeltaTime;
+
+            // without physics
             new MoveJob
             {
                 DeltaTime = deltaTime
             }.Schedule();
+
+            // with physics
+            new MovePhysicsJob().Schedule();
         }
     }
 }

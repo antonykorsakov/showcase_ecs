@@ -53,67 +53,76 @@ namespace SpawnModule.Controller
                 var random = Random.CreateFromIndex((uint)state.GlobalSystemVersion);
                 var y = config.SpawnPositionY;
 
-                if ((_spawnState & 0b001) == 0 && SystemAPI.HasComponent<CharacterSpawnerTag>(entity))
+                if (SystemAPI.HasComponent<CharacterSpawnerTag>(entity))
                 {
-                    var character = ecb.Instantiate(prefab);
-                    var x = random.NextFloat(-5, 5);
-                    var z = random.NextFloat(-5, 5);
-                    ecb.SetComponent(character, LocalTransform.FromPosition(x, y, z));
-
-                    ecb.AddComponent<MoveDirectionData>(character);
-                    ecb.AddComponent<MoveSpeedData>(character);
-                    ecb.AddComponent(character, new SpeedDecayData { Value = 0.01f });
-
-                    switch (_counter1)
+                    if ((_spawnState & 0b001) == 0)
                     {
-                        case 0:
-                            ecb.AddComponent<InputControlledTag>(character);
-                            break;
+                        var character = ecb.Instantiate(prefab);
+                        var x = random.NextFloat(-5, 5);
+                        var z = random.NextFloat(-5, 5);
+                        ecb.SetComponent(character, LocalTransform.FromPosition(x, y, z));
 
-                        case >= 3:
-                            _spawnState |= 0b001;
-                            break;
+                        ecb.AddComponent<MoveDirectionData>(character);
+                        ecb.AddComponent<MoveSpeedData>(character);
+                        ecb.AddComponent(character, new SpeedDecayData { Value = 0.01f });
+
+                        switch (_counter1)
+                        {
+                            case 0:
+                                ecb.AddComponent<InputControlledTag>(character);
+                                break;
+
+                            case >= 3:
+                                _spawnState |= 0b001;
+                                break;
+                        }
+
+                        _counter1++;
                     }
-
-                    _counter1++;
                 }
-                else if ((_spawnState & 0b010) == 0 && SystemAPI.HasComponent<CarSpawnerTag>(entity))
+                else if (SystemAPI.HasComponent<CarSpawnerTag>(entity))
                 {
-                    var car = ecb.Instantiate(prefab);
-                    var x = random.NextFloat(-5, 5);
-                    var z = random.NextFloat(-5, 5);
-                    ecb.SetComponent(car, LocalTransform.FromPosition(x, y, z));
-
-                    ecb.AddComponent<InteractableTag>(car);
-                    ecb.AddComponent<MoveDirectionData>(car);
-                    ecb.AddComponent<MoveSpeedData>(car);
-                    ecb.AddComponent(car, new SpeedDecayData { Value = 0.01f });
-                    // ecb.AddComponent(car, new MoveSpeedConfig { Value = 1.2f });
-
-                    switch (_counter2)
+                    if ((_spawnState & 0b010) == 0)
                     {
-                        case >= 2:
-                            _spawnState |= 0b010;
-                            break;
-                    }
+                        var car = ecb.Instantiate(prefab);
+                        var x = random.NextFloat(-5, 5);
+                        var z = random.NextFloat(-5, 5);
+                        ecb.SetComponent(car, LocalTransform.FromPosition(x, y, z));
 
-                    _counter2++;
+                        ecb.AddComponent<InteractableTag>(car);
+                        ecb.AddComponent<MoveDirectionData>(car);
+                        ecb.AddComponent<MoveSpeedData>(car);
+                        ecb.AddComponent(car, new SpeedDecayData { Value = 0.01f });
+                        // ecb.AddComponent(car, new MoveSpeedConfig { Value = 1.2f });
+
+                        switch (_counter2)
+                        {
+                            case >= 1:
+                                _spawnState |= 0b010;
+                                break;
+                        }
+
+                        _counter2++;
+                    }
                 }
-                else if ((_spawnState & 0b100) == 0 && SystemAPI.HasComponent<TreeSpawnerTag>(entity))
+                else if (SystemAPI.HasComponent<TreeSpawnerTag>(entity))
                 {
-                    var tree = ecb.Instantiate(prefab);
-                    var x = random.NextFloat(-5, 5);
-                    var z = random.NextFloat(-5, 5);
-                    ecb.SetComponent(tree, LocalTransform.FromPosition(x, y, z));
-
-                    switch (_counter3)
+                    if ((_spawnState & 0b100) == 0)
                     {
-                        case >= 20:
-                            _spawnState |= 0b100;
-                            break;
-                    }
+                        var tree = ecb.Instantiate(prefab);
+                        var x = random.NextFloat(-5, 5);
+                        var z = random.NextFloat(-5, 5);
+                        ecb.SetComponent(tree, LocalTransform.FromPosition(x, y, z));
 
-                    _counter3++;
+                        switch (_counter3)
+                        {
+                            case >= 20:
+                                _spawnState |= 0b100;
+                                break;
+                        }
+
+                        _counter3++;
+                    }
                 }
             }
 
@@ -121,7 +130,22 @@ namespace SpawnModule.Controller
             ecb.Dispose();
 
             if (_spawnState == 0b111)
+            {
                 state.Enabled = false;
+                // MyDebug(ref state);
+            }
+        }
+
+        private void MyDebug(ref SystemState state)
+        {
+            var query = state.EntityManager.CreateEntityQuery(typeof(InteractableTag));
+            var cars = query.ToEntityArray(Allocator.Temp);
+            foreach (var car in cars)
+            {
+                // Debug.LogError($"Interactable Car: ID = {car.Index}, Version = {car.Version}");
+            }
+
+            cars.Dispose();
         }
     }
 }
