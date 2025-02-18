@@ -648,7 +648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterPrefab: {fileID: 4387655058053192022, guid: 146d7ba06c17bc643a302d4b8607cb32, type: 3}
-  _carPrefab: {fileID: 7011398301792643625, guid: 3ec1495b74ee0aa4687d6fa0ea521fb6, type: 3}
+  _carPrefab: {fileID: 7011398301792643625, guid: 316cd2b02cc8fac4a94319a9762fb4c5, type: 3}
   _treePrefab: {fileID: 7011398301792643625, guid: 8665692cfdbb8964da55a657270650f0, type: 3}
   _spawnPlace: {fileID: 1529957297}
   _spawnInterval: 1.4

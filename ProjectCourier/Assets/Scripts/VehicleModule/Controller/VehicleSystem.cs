@@ -62,7 +62,7 @@ namespace VehicleModule.Controller
                     ? SystemAPI.GetComponent<MoveDirectionData>(vehicleEntity).Value.x * 10.0f
                     : 0f;
 
-                Debug.LogError($"desiredSteeringAngle = {desiredSteeringAngle};");
+                // Debug.LogError($"desiredSteeringAngle = {desiredSteeringAngle};");
 
                 #region handle wheel steering
 

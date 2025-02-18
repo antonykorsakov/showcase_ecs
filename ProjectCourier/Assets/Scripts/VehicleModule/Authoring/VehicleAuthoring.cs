@@ -80,7 +80,8 @@ namespace VehicleModule.Authoring
                 };
 
                 int count = authoring._wheels.Count;
-                var array = new NativeArray<WheelBakingInfo>(count, Allocator.Temp);
+
+                var buffer = AddBuffer<WheelBakingData>(vehicleEntity);
                 for (var index = 0; index < count; index++)
                 {
                     //
@@ -96,20 +97,15 @@ namespace VehicleModule.Authoring
                     };
                     var chassisFromSuspension = math.mul(math.inverse(worldFromChassis), worldFromSuspension);
 
-                    array[index] = new WheelBakingInfo
+                    buffer.Add(new WheelBakingData()
                     {
                         Wheel = GetEntity(wheelSource, TransformUsageFlags.Dynamic),
                         GraphicalRepresentation = GetEntity(wheelGraphicalSource, TransformUsageFlags.Dynamic),
                         UsedForSteering = (byte)(authoring._steeringWheels.Contains(wheelSource) ? 1 : 0),
                         UsedForDriving = (byte)(authoring._driveWheels.Contains(wheelSource) ? 1 : 0),
                         ChassisFromSuspension = chassisFromSuspension,
-                    };
+                    });
                 }
-
-                AddComponent(vehicleEntity, new VehicleBackingData
-                {
-                    Wheels = array,
-                });
             }
 
             NativeArray<Entity> ToNativeArray(List<GameObject> list, Allocator allocator)
