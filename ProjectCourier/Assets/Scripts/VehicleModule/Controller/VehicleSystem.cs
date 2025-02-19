@@ -103,9 +103,28 @@ namespace VehicleModule.Controller
                     float currentSpeedForward = math.dot(wheelVelocity, wheelForward);
                     float deltaSpeedForward = math.clamp(driveDesiredSpeed - currentSpeedForward, -10.0f, 10.0f);
 
-                    var impulse = deltaSpeedForward * wheelForward * 10f;
+                    var impulse = deltaSpeedForward * wheelForward * 15f;
                     var groundIndex = wheelRayResult.RigidBodyIndex;
                     var isStatic = groundIndex < 0 || groundIndex >= world.NumDynamicBodies;
+
+                    // friction
+                    var surfaceEntity = wheelRayResult.Entity;
+                    if (false && state.EntityManager.HasComponent<SurfaceFrictionData>(surfaceEntity))
+                    {
+                        var surfaceFriction = state.EntityManager.GetComponentData<SurfaceFrictionData>(surfaceEntity);
+
+                        // 500f - примерное значение высчитанное исходя из массы и гравитации
+                        // 1000кг * 9,81 / 2 = ~500
+                        // https://www.calculatorsoup.com/calculators/physics/friction.php
+                        float frictionForce = -currentSpeedForward * surfaceFriction.DynamicFriction * 100f;
+                        var frictionImpulse = frictionForce * wheelForward;
+                        impulse += frictionImpulse;
+                        
+                        float currentSpeedSideways = math.dot(wheelVelocity, wheelRight);
+                        float lateralFrictionForce = -currentSpeedSideways * surfaceFriction.DynamicFriction * 50f;
+                        var lateralFrictionImpulse = lateralFrictionForce * wheelRight;
+                        impulse += lateralFrictionImpulse;
+                    }
 
                     Debug.LogError($"ID: {wheelEntity.Index}; wheelPosition = {wheelPosition}; impulse = {impulse};");
 
