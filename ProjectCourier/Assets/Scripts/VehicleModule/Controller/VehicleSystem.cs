@@ -1,4 +1,3 @@
-using MovementModule.Data;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -33,12 +32,12 @@ namespace VehicleModule.Controller
             // update each wheel
             var commandBuffer = new EntityCommandBuffer(Allocator.TempJob);
 
-            foreach (var (localTransform, wheel, entity)
+            foreach (var (wheelTransform, wheelData, wheelEntity)
                      in SystemAPI.Query<RefRW<LocalTransform>, RefRO<WheelData>>().WithEntityAccess())
             {
-                var newLocalTransform = localTransform;
+                var newWheelTransform = wheelTransform;
 
-                Entity vehicleEntity = wheel.ValueRO.Vehicle;
+                Entity vehicleEntity = wheelData.ValueRO.Vehicle;
                 if (vehicleEntity == Entity.Null)
                     return;
 
@@ -50,26 +49,33 @@ namespace VehicleModule.Controller
                 var vehicleTransform = SystemAPI.GetComponent<LocalTransform>(vehicleEntity);
                 var vehiclePosition = vehicleTransform.Position;
                 var vehicleRotation = vehicleTransform.Rotation;
-                var vehicleUp = math.mul(vehicleRotation, new float3(0f, 1f, 0f));
-                var vehicleForward = math.mul(vehicleRotation, new float3(0f, 0f, 1f));
-                var vehicleRight = math.mul(vehicleRotation, new float3(1f, 0f, 0f));
+                var vehicleUp = math.mul(vehicleRotation, math.up());
+                var vehicleForward = math.mul(vehicleRotation, math.forward());
+                var vehicleRight = math.mul(vehicleRotation, math.right());
+
+                RigidTransform worldFromChassis = new RigidTransform
+                {
+                    pos = vehiclePosition,
+                    rot = vehicleRotation,
+                };
+                var worldFromSuspension = math.mul(worldFromChassis, wheelData.ValueRO.ChassisFromSuspension);
 
                 // wheel entity info
-                var wheelPosition = localTransform.ValueRO.Position;
                 var wheelUp = vehicleUp;
                 var wheelForward = vehicleForward;
                 var wheelRight = vehicleRight;
-                var wheelVelocity = world.GetLinearVelocity(vehicleIndex, wheelPosition);
                 var wheelRay = new RaycastInput
                 {
-                    Start = wheelPosition,
-                    End = wheelPosition - new float3(0f, 1f, 0f),
+                    Start = worldFromSuspension.pos,
+                    End = worldFromSuspension.pos - math.up(),
                     Filter = world.GetCollisionFilter(vehicleIndex),
                 };
                 var wheelHit = world.CastRay(wheelRay, out var wheelRayResult);
+                var wheelPosition = wheelHit ? wheelRayResult.Position : wheelRay.End;
+                var wheelVelocity = world.GetLinearVelocity(vehicleIndex, wheelPosition);
 
                 // Apply rotate steering wheels
-                if (wheel.ValueRO.UsedForSteering != 0)
+                if (wheelData.ValueRO.UsedForSteering != 0)
                 {
                     float desiredSteeringAngle = SystemAPI.HasComponent<VehicleSteering>(vehicleEntity)
                         ? SystemAPI.GetComponent<VehicleSteering>(vehicleEntity).DesiredSteeringAngle
@@ -80,37 +86,37 @@ namespace VehicleModule.Controller
                     wheelRight = math.rotate(wRotation, wheelRight);
                     wheelForward = math.rotate(wRotation, wheelForward);
 
-                    newLocalTransform.ValueRW.Rotation = quaternion.AxisAngle(math.up(), desiredSteeringAngle);
+                    newWheelTransform.ValueRW.Rotation = quaternion.AxisAngle(math.up(), desiredSteeringAngle);
                 }
 
                 // get speed
                 float driveDesiredSpeed = 0f;
-                bool driveEngaged = false;
                 if (SystemAPI.HasComponent<VehicleSpeed>(vehicleEntity))
                 {
                     var vehicleSpeedData = SystemAPI.GetComponent<VehicleSpeed>(vehicleEntity);
                     driveDesiredSpeed = vehicleSpeedData.DesiredSpeed;
-                    driveEngaged = vehicleSpeedData.DriveEngaged != 0;
                 }
 
                 // Apply physics
-                if (!driveEngaged && wheelHit)
+                if (wheelHit)
                 {
                     float currentSpeedForward = math.dot(wheelVelocity, wheelForward);
                     float deltaSpeedForward = math.clamp(driveDesiredSpeed - currentSpeedForward, -10.0f, 10.0f);
 
-                    var impulse = deltaSpeedForward * wheelForward * 25f;
+                    var impulse = deltaSpeedForward * wheelForward * 10f;
                     var groundIndex = wheelRayResult.RigidBodyIndex;
                     var isStatic = groundIndex < 0 || groundIndex >= world.NumDynamicBodies;
+
+                    Debug.LogError($"ID: {wheelEntity.Index}; wheelPosition = {wheelPosition}; impulse = {impulse};");
 
                     world.ApplyImpulse(vehicleIndex, impulse, wheelPosition);
                     if (!isStatic)
                         world.ApplyImpulse(groundIndex, -impulse, wheelPosition);
                 }
 
-                if (!newLocalTransform.ValueRO.Equals(localTransform.ValueRO))
+                if (!newWheelTransform.ValueRO.Equals(wheelTransform.ValueRO))
                 {
-                    commandBuffer.SetComponent(entity, newLocalTransform.ValueRO);
+                    commandBuffer.SetComponent(wheelEntity, newWheelTransform.ValueRO);
                 }
             }
 
