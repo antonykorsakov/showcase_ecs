@@ -99,7 +99,7 @@ namespace VehicleModule.Controller
                     float currentSpeedForward = math.dot(wheelVelocity, wheelForward);
                     float deltaSpeedForward = math.clamp(driveDesiredSpeed - currentSpeedForward, -10.0f, 10.0f);
 
-                    var impulse = deltaSpeedForward * wheelForward * 10f;
+                    var impulse = deltaSpeedForward * wheelForward * 25f;
                     var groundIndex = wheelRayResult.RigidBodyIndex;
                     var isStatic = groundIndex < 0 || groundIndex >= world.NumDynamicBodies;
 
