@@ -94,7 +94,7 @@ namespace VehicleModule.Controller
                 if (SystemAPI.HasComponent<VehicleSpeed>(vehicleEntity))
                 {
                     var vehicleSpeedData = SystemAPI.GetComponent<VehicleSpeed>(vehicleEntity);
-                    driveDesiredSpeed = vehicleSpeedData.DesiredSpeed;
+                    driveDesiredSpeed = vehicleSpeedData.DesiredSpeed * 8f;
                 }
 
                 // Apply physics
@@ -110,14 +110,14 @@ namespace VehicleModule.Controller
                     // forward
                     {
                         float currentSpeedForward = math.dot(wheelVelocity, wheelForward);
-                        float deltaSpeedForward = math.clamp(driveDesiredSpeed - currentSpeedForward, -10.0f, 10.0f);
-                        impulse += deltaSpeedForward * wheelForward * 60f;
+                        float deltaSpeedForward = driveDesiredSpeed - currentSpeedForward;
+                        impulse += deltaSpeedForward * wheelForward;
 
                         // +friction
                         if (frictionCoef > 0)
                         {
                             // https://www.calculatorsoup.com/calculators/physics/friction.php
-                            float frictionForce = -currentSpeedForward * frictionCoef * 50f;
+                            float frictionForce = -currentSpeedForward * frictionCoef;
                             var frictionImpulse = frictionForce * wheelForward;
                             impulse += frictionImpulse;
                         }
@@ -126,14 +126,14 @@ namespace VehicleModule.Controller
                     // right
                     {
                         float currentSpeedRight = math.dot(wheelVelocity, wheelRight);
-                        float deltaSpeedRight = math.clamp(0 - currentSpeedRight * 0.5f, -10.0f, 10.0f);
-                        impulse += deltaSpeedRight * wheelRight * 60f;
+                        float deltaSpeedRight = 0 - currentSpeedRight; // * 0.5f;
+                        impulse += deltaSpeedRight * wheelRight;
 
                         // +friction
                         if (frictionCoef > 0)
                         {
                             // https://www.calculatorsoup.com/calculators/physics/friction.php
-                            float lateralFrictionForce = -currentSpeedRight * frictionCoef * 25f;
+                            float lateralFrictionForce = -currentSpeedRight * frictionCoef;
                             var lateralFrictionImpulse = lateralFrictionForce * wheelRight;
                             impulse += lateralFrictionImpulse;
                         }
