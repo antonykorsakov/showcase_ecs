@@ -1,7 +1,4 @@
 using System.Collections.Generic;
-using InputModule.Data;
-using MovementModule.Data;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -13,8 +10,8 @@ namespace VehicleModule.Authoring
     public class VehicleAuthoring : MonoBehaviour
     {
         [SerializeField] private GameObject _chassis;
-        [SerializeField] private List<GameObject> _suspensions = new();
         [SerializeField] private List<GameObject> _wheels = new();
+        [SerializeField] private List<GameObject> _wheelsPivot = new();
         [SerializeField] private List<GameObject> _steeringWheels = new();
         [SerializeField] private List<GameObject> _driveWheels = new();
 
@@ -43,7 +40,7 @@ namespace VehicleModule.Authoring
                     //
                     var wheelGraphicalSource = wheelSource.transform;
                     //
-                    var suspensionSource = authoring._suspensions[index];
+                    var suspensionSource = authoring._wheelsPivot[index];
                     RigidTransform worldFromSuspension = new()
                     {
                         pos = suspensionSource.transform.position,

@@ -1573,16 +1573,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _chassis: {fileID: 7202822483020731701}
-  _suspensions:
-  - {fileID: 1807713912198303029}
-  - {fileID: 7117653855993399127}
-  - {fileID: 6495718804094034498}
-  - {fileID: 2719729688801445277}
   _wheels:
   - {fileID: 6229647830424611450}
   - {fileID: 7271666496623275727}
   - {fileID: 3015559684681374563}
   - {fileID: 6179739856587751833}
+  _wheelsPivot:
+  - {fileID: 2824599215782331126}
+  - {fileID: 7464631759534117920}
+  - {fileID: 4437892860421582179}
+  - {fileID: 1697191733150051469}
   _steeringWheels:
   - {fileID: 6229647830424611450}
   - {fileID: 7271666496623275727}
