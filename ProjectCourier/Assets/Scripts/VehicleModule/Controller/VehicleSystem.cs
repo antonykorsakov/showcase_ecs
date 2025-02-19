@@ -100,37 +100,54 @@ namespace VehicleModule.Controller
                 // Apply physics
                 if (wheelHit)
                 {
-                    float currentSpeedForward = math.dot(wheelVelocity, wheelForward);
-                    float deltaSpeedForward = math.clamp(driveDesiredSpeed - currentSpeedForward, -10.0f, 10.0f);
+                    float3 impulse = float3.zero;
 
-                    var impulse = deltaSpeedForward * wheelForward * 15f;
-                    var groundIndex = wheelRayResult.RigidBodyIndex;
-                    var isStatic = groundIndex < 0 || groundIndex >= world.NumDynamicBodies;
-
-                    // friction
                     var surfaceEntity = wheelRayResult.Entity;
-                    if (false && state.EntityManager.HasComponent<SurfaceFrictionData>(surfaceEntity))
-                    {
-                        var surfaceFriction = state.EntityManager.GetComponentData<SurfaceFrictionData>(surfaceEntity);
+                    var frictionCoef = SystemAPI.HasComponent<SurfaceFrictionData>(surfaceEntity)
+                        ? SystemAPI.GetComponent<SurfaceFrictionData>(surfaceEntity).DynamicFriction
+                        : 0f;
 
-                        // 500f - примерное значение высчитанное исходя из массы и гравитации
-                        // 1000кг * 9,81 / 2 = ~500
-                        // https://www.calculatorsoup.com/calculators/physics/friction.php
-                        float frictionForce = -currentSpeedForward * surfaceFriction.DynamicFriction * 100f;
-                        var frictionImpulse = frictionForce * wheelForward;
-                        impulse += frictionImpulse;
-                        
-                        float currentSpeedSideways = math.dot(wheelVelocity, wheelRight);
-                        float lateralFrictionForce = -currentSpeedSideways * surfaceFriction.DynamicFriction * 50f;
-                        var lateralFrictionImpulse = lateralFrictionForce * wheelRight;
-                        impulse += lateralFrictionImpulse;
+                    // forward
+                    {
+                        float currentSpeedForward = math.dot(wheelVelocity, wheelForward);
+                        float deltaSpeedForward = math.clamp(driveDesiredSpeed - currentSpeedForward, -10.0f, 10.0f);
+                        impulse += deltaSpeedForward * wheelForward * 60f;
+
+                        // +friction
+                        if (frictionCoef > 0)
+                        {
+                            // https://www.calculatorsoup.com/calculators/physics/friction.php
+                            float frictionForce = -currentSpeedForward * frictionCoef * 50f;
+                            var frictionImpulse = frictionForce * wheelForward;
+                            impulse += frictionImpulse;
+                        }
                     }
 
-                    Debug.LogError($"ID: {wheelEntity.Index}; wheelPosition = {wheelPosition}; impulse = {impulse};");
+                    // right
+                    {
+                        float currentSpeedRight = math.dot(wheelVelocity, wheelRight);
+                        float deltaSpeedRight = math.clamp(0 - currentSpeedRight * 0.5f, -10.0f, 10.0f);
+                        impulse += deltaSpeedRight * wheelRight * 60f;
 
-                    world.ApplyImpulse(vehicleIndex, impulse, wheelPosition);
-                    if (!isStatic)
-                        world.ApplyImpulse(groundIndex, -impulse, wheelPosition);
+                        // +friction
+                        if (frictionCoef > 0)
+                        {
+                            // https://www.calculatorsoup.com/calculators/physics/friction.php
+                            float lateralFrictionForce = -currentSpeedRight * frictionCoef * 25f;
+                            var lateralFrictionImpulse = lateralFrictionForce * wheelRight;
+                            impulse += lateralFrictionImpulse;
+                        }
+                    }
+
+                    // ApplyImpulse
+                    {
+                        world.ApplyImpulse(vehicleIndex, impulse, wheelPosition);
+
+                        var groundIndex = wheelRayResult.RigidBodyIndex;
+                        var isStatic = groundIndex < 0 || groundIndex >= world.NumDynamicBodies;
+                        if (!isStatic)
+                            world.ApplyImpulse(groundIndex, -impulse, wheelPosition);
+                    }
                 }
 
                 if (!newWheelTransform.ValueRO.Equals(wheelTransform.ValueRO))
