@@ -13,7 +13,6 @@ namespace MovementModule.Controller
             var deltaTime = SystemAPI.Time.DeltaTime;
 
             // without physics
-            if (false)
             {
                 new MoveJob
                 {

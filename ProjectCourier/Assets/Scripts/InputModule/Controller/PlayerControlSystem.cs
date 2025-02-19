@@ -7,6 +7,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using VehicleModule.Data;
 
 namespace InputModule.Controller
 {
@@ -95,17 +96,39 @@ namespace InputModule.Controller
             {
                 if (movePerformed)
                 {
-                    float2 moveDirection = _moveAction.ReadValue<Vector2>();
+                    float2 inputDirection = _moveAction.ReadValue<Vector2>();
+
+                    // character
                     if (EntityManager.HasComponent<MoveDirectionData>(entity))
-                        ecb.SetComponent(entity, new MoveDirectionData { Value = moveDirection });
-
-                    if (!EntityManager.HasComponent<SpeedBoostData>(entity))
                     {
-                        var data = sprintPerformed
-                            ? new SpeedBoostData { Value = 0.1f, Max = 6f }
-                            : new SpeedBoostData { Value = 0.05f, Max = 3f };
+                        ecb.SetComponent(entity, new MoveDirectionData { Value = inputDirection });
 
-                        ecb.AddComponent(entity, data);
+                        if (!EntityManager.HasComponent<SpeedBoostData>(entity))
+                        {
+                            var data = sprintPerformed
+                                ? new SpeedBoostData { Value = 0.1f, Max = 6f }
+                                : new SpeedBoostData { Value = 0.05f, Max = 3f };
+
+                            ecb.AddComponent(entity, data);
+                        }
+                    }
+
+                    // vehicle
+                    if (EntityManager.HasComponent<VehicleData>(entity))
+                    {
+                        if (math.abs(inputDirection.x) > 0)
+                        {
+                            var sign = math.sign(inputDirection.x);
+                            ecb.SetComponent(entity, new VehicleSteering { DesiredSteeringAngle = 0.5f * sign });
+                        }
+
+                        if (math.abs(inputDirection.y) > 0)
+                        {
+                            // var vehicleSpeedData = EntityManager.GetComponentData<VehicleSpeed>(entity);
+                            // var speed = math.clamp(vehicleSpeedData.DesiredSpeed + inputDirection.y, 0, 3);
+                            var sign = math.sign(inputDirection.y);
+                            ecb.SetComponent(entity, new VehicleSpeed { DesiredSpeed = 3 * sign });
+                        }
                     }
                 }
 

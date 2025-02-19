@@ -90,10 +90,7 @@ namespace SpawnModule.Controller
                         ecb.SetComponent(car, LocalTransform.FromPosition(x, y, z));
 
                         ecb.AddComponent<InteractableTag>(car);
-                        ecb.AddComponent<MoveDirectionData>(car);
-                        ecb.AddComponent<MoveSpeedData>(car);
-                        ecb.AddComponent(car, new SpeedDecayData { Value = 0.01f });
-                        // ecb.AddComponent(car, new MoveSpeedConfig { Value = 1.2f });
+                        // ecb.AddComponent(car, new SpeedDecayData { Value = 0.01f });
 
                         switch (_counter2)
                         {

@@ -24,6 +24,8 @@ namespace VehicleModule.Authoring
             {
                 var vehicleEntity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent<VehicleData>(vehicleEntity);
+                AddComponent<VehicleSpeed>(vehicleEntity);
+                AddComponent<VehicleSteering>(vehicleEntity);
 
                 RigidTransform worldFromChassis = new()
                 {

@@ -39,9 +39,9 @@ namespace VehicleModule.Authoring
             commandBuffer.Playback(state.EntityManager);
             commandBuffer.Dispose();
 
-            MyDebug(ref state, typeof(WheelData));
-            MyDebug(ref state, typeof(MoveDirectionData));
-            MyDebug(ref state, typeof(VehicleData));
+            // MyDebug(ref state, typeof(WheelData));
+            // MyDebug(ref state, typeof(MoveDirectionData));
+            // MyDebug(ref state, typeof(VehicleData));
         }
 
         private void MyDebug(ref SystemState state, Type tag)
