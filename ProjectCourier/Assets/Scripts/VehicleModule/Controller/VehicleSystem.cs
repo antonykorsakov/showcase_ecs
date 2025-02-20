@@ -77,21 +77,18 @@ namespace VehicleModule.Controller
                 // Apply rotate steering wheels
                 if (wheelData.ValueRO.UsedForSteering != 0)
                 {
-                    float desiredSteeringAngle = SystemAPI.HasComponent<VehicleSteering>(vehicleEntity)
-                        ? SystemAPI.GetComponent<VehicleSteering>(vehicleEntity).DesiredSteeringAngle
-                        : 0f;
+                    float steeringAngle = SystemAPI.GetComponent<VehicleSteeringData>(vehicleEntity).Value;
 
                     // desiredSteeringAngle - in radian!!!
-                    quaternion wRotation = quaternion.AxisAngle(vehicleUp, desiredSteeringAngle);
+                    quaternion wRotation = quaternion.AxisAngle(vehicleUp, steeringAngle);
                     wheelRight = math.rotate(wRotation, wheelRight);
                     wheelForward = math.rotate(wRotation, wheelForward);
 
-                    newWheelTransform.ValueRW.Rotation = quaternion.AxisAngle(math.up(), desiredSteeringAngle);
+                    newWheelTransform.ValueRW.Rotation = quaternion.AxisAngle(math.up(), steeringAngle);
                 }
 
                 // get speed
-                var vehicleSpeedData = SystemAPI.GetComponent<VehicleSpeedData>(vehicleEntity);
-                var currentSpeed = vehicleSpeedData.CurrentSpeed;
+                var speed = SystemAPI.GetComponent<VehicleSpeedData>(vehicleEntity).Value;
 
                 // Apply physics
                 if (wheelHit)
@@ -106,7 +103,7 @@ namespace VehicleModule.Controller
                     // forward
                     {
                         float currentSpeedForward = math.dot(wheelVelocity, wheelForward);
-                        float deltaSpeedForward = currentSpeed - currentSpeedForward;
+                        float deltaSpeedForward = speed - currentSpeedForward;
                         impulse += deltaSpeedForward * wheelForward;
 
                         // +friction

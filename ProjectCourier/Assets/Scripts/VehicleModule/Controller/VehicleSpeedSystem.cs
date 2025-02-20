@@ -19,33 +19,33 @@ namespace VehicleModule.Controller
         {
             float deltaTime = SystemAPI.Time.DeltaTime;
 
-            foreach (var (speedData, speedConfig)
+            foreach (var (data, config)
                      in SystemAPI.Query<RefRW<VehicleSpeedData>, RefRO<VehicleSpeedConfig>>())
             {
-                var maxSpeed = speedConfig.ValueRO.MaxSpeed;
+                var maxSpeed = config.ValueRO.MaxSpeed;
                 float accelerate;
 
-                switch (speedData.ValueRW.ThrottleInputState)
+                switch (data.ValueRW.InputState)
                 {
                     // Вперёд
                     case 1:
-                        accelerate = speedConfig.ValueRO.AccelerationRate;
+                        accelerate = config.ValueRO.AccelerationRate;
                         break;
 
                     // Торможение
                     case -1:
-                        accelerate = -speedConfig.ValueRO.AccelerationRate;
+                        accelerate = -config.ValueRO.AccelerationRate;
                         break;
 
                     // Бездействие
                     case 0:
                     default:
-                        accelerate = -speedConfig.ValueRO.IdleDecelerationRate;
+                        accelerate = -config.ValueRO.IdleDecelerationRate;
                         break;
                 }
 
-                var speed = math.clamp(speedData.ValueRW.CurrentSpeed + accelerate * deltaTime, 0, maxSpeed);
-                speedData.ValueRW.CurrentSpeed = speed;
+                var speed = math.clamp(data.ValueRW.Value + accelerate * deltaTime, 0, maxSpeed);
+                data.ValueRW.Value = speed;
             }
         }
     }

@@ -2,12 +2,12 @@ using Unity.Entities;
 
 namespace VehicleModule.Data
 {
-    public struct VehicleSpeedData : IComponentData
+    public struct VehicleSteeringData : IComponentData
     {
         /// <summary>
-        /// +1 - forward
-        /// 0 - nothing
-        /// -1 - backward 
+        /// -1 - left
+        ///  0 - neutral
+        ///  1 - right
         /// </summary>
         public int InputState;
 

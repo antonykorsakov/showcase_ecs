@@ -22,13 +22,20 @@ namespace VehicleModule.Authoring
                 var vehicleEntity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent<VehicleData>(vehicleEntity);
                 AddComponent<VehicleSpeedData>(vehicleEntity);
-                AddComponent<VehicleSteering>(vehicleEntity);
                 AddComponent(vehicleEntity, new VehicleSpeedConfig
                 {
                     MaxSpeed = 80,
-                    AccelerationRate = 15,
-                    IdleDecelerationRate = 3,
+                    AccelerationRate = 30,
+                    IdleDecelerationRate = 20,
                 });
+                AddComponent<VehicleSteeringData>(vehicleEntity);
+                AddComponent(vehicleEntity, new VehicleSteeringConfig
+                {
+                    MaxSteeringAngle = 0.785f,
+                    SteeringSpeed = 10,
+                    ReturnSpeed = 3,
+                });
+
 
                 RigidTransform worldFromChassis = new()
                 {
