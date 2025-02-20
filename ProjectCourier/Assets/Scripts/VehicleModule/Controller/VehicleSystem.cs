@@ -8,6 +8,8 @@ using Unity.Physics.Systems;
 using Unity.Transforms;
 using UnityEngine;
 using VehicleModule.Data;
+using VehicleSpeedModule.Data;
+using VehicleSteeringModule.Data;
 
 namespace VehicleModule.Controller
 {
@@ -107,13 +109,13 @@ namespace VehicleModule.Controller
                         impulse += deltaSpeedForward * wheelForward;
 
                         // +friction
-                        if (frictionCoef > 0)
-                        {
-                            // https://www.calculatorsoup.com/calculators/physics/friction.php
-                            float frictionForce = -currentSpeedForward * frictionCoef;
-                            var frictionImpulse = frictionForce * wheelForward;
-                            impulse += frictionImpulse;
-                        }
+                        // if (frictionCoef > 0)
+                        // {
+                        //     // https://www.calculatorsoup.com/calculators/physics/friction.php
+                        //     float frictionForce = -currentSpeedForward * frictionCoef;
+                        //     var frictionImpulse = frictionForce * wheelForward;
+                        //     impulse += frictionImpulse;
+                        // }
                     }
 
                     // right
@@ -123,13 +125,13 @@ namespace VehicleModule.Controller
                         impulse += deltaSpeedRight * wheelRight;
 
                         // +friction
-                        if (frictionCoef > 0)
-                        {
-                            // https://www.calculatorsoup.com/calculators/physics/friction.php
-                            float lateralFrictionForce = -currentSpeedRight * frictionCoef;
-                            var lateralFrictionImpulse = lateralFrictionForce * wheelRight;
-                            impulse += lateralFrictionImpulse;
-                        }
+                        // if (frictionCoef > 0)
+                        // {
+                        //     // https://www.calculatorsoup.com/calculators/physics/friction.php
+                        //     float lateralFrictionForce = -currentSpeedRight * frictionCoef;
+                        //     var lateralFrictionImpulse = lateralFrictionForce * wheelRight;
+                        //     impulse += lateralFrictionImpulse;
+                        // }
                     }
 
                     // ApplyImpulse

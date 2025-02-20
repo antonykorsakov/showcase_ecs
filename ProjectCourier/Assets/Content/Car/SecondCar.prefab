@@ -1289,7 +1289,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6229647830424611450}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1536,6 +1536,8 @@ GameObject:
   - component: {fileID: 6225304443574889873}
   - component: {fileID: -8320683102294719345}
   - component: {fileID: 3481879502247659523}
+  - component: {fileID: 6551805155248761196}
+  - component: {fileID: 4590865223921787709}
   m_Layer: 0
   m_Name: SecondCar
   m_TagString: Untagged
@@ -1642,6 +1644,40 @@ MonoBehaviour:
     Tag05: 0
     Tag06: 0
     Tag07: 0
+--- !u!114 &6551805155248761196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7011398301792643625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f5c942125644ceb95e860bd05d35fad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxInterval:
+    x: -15
+    y: 80
+  _activeAcceleration: 30
+  _idleDeceleration: 20
+--- !u!114 &4590865223921787709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7011398301792643625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32ec41a9036143bb9dda965f557af5cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxInterval:
+    x: -0.785
+    y: 0.785
+  _activeAcceleration: 10
+  _idleDeceleration: 3
 --- !u!1 &7044542682624121847
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,8 +1,9 @@
 using Unity.Entities;
 using Unity.Mathematics;
 using VehicleModule.Data;
+using VehicleSpeedModule.Data;
 
-namespace VehicleModule.Controller
+namespace VehicleSpeedModule.Controller
 {
     public partial struct VehicleSpeedSystem : ISystem
     {
@@ -22,30 +23,28 @@ namespace VehicleModule.Controller
             foreach (var (data, config)
                      in SystemAPI.Query<RefRW<VehicleSpeedData>, RefRO<VehicleSpeedConfig>>())
             {
-                var maxSpeed = config.ValueRO.MaxSpeed;
+                float lowerBound = config.ValueRO.MaxInterval[0];
+                float upperBound = config.ValueRO.MaxInterval[1];
                 float accelerate;
 
                 switch (data.ValueRW.InputState)
                 {
-                    // Вперёд
                     case 1:
-                        accelerate = config.ValueRO.AccelerationRate;
+                        accelerate = config.ValueRO.ActiveAcceleration;
                         break;
 
-                    // Торможение
                     case -1:
-                        accelerate = -config.ValueRO.AccelerationRate;
+                        accelerate = -config.ValueRO.ActiveAcceleration;
                         break;
 
-                    // Бездействие
-                    case 0:
+                    // Idle
                     default:
-                        accelerate = -config.ValueRO.IdleDecelerationRate;
+                        accelerate = -config.ValueRO.IdleDeceleration;
                         break;
                 }
 
-                var speed = math.clamp(data.ValueRW.Value + accelerate * deltaTime, 0, maxSpeed);
-                data.ValueRW.Value = speed;
+                float value = data.ValueRW.Value + accelerate * deltaTime;
+                data.ValueRW.Value = math.clamp(value, lowerBound, upperBound);
             }
         }
     }

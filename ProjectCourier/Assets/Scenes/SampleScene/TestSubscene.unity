@@ -1079,8 +1079,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1dba3b04c0340f48cef8a577f7146fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _staticFriction: 0.9
-  _dynamicFriction: 0.8
+  _staticFriction: 0.3
+  _dynamicFriction: 0.25
 --- !u!1 &1362279518
 GameObject:
   m_ObjectHideFlags: 0
@@ -1405,8 +1405,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1dba3b04c0340f48cef8a577f7146fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _staticFriction: 0.5
-  _dynamicFriction: 0.3
+  _staticFriction: 0.15
+  _dynamicFriction: 0.1
 --- !u!114 &2084162934
 MonoBehaviour:
   m_ObjectHideFlags: 0

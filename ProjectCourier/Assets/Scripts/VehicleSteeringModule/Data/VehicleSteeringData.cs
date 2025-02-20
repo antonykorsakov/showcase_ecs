@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-namespace VehicleModule.Data
+namespace VehicleSteeringModule.Data
 {
     public struct VehicleSteeringData : IComponentData
     {
