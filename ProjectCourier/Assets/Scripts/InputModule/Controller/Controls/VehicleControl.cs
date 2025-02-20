@@ -12,11 +12,18 @@ namespace InputModule.Controller.Controls
         {
             float2 inputDirection = moveAction.ReadValue<UnityEngine.Vector2>();
 
+            //
             var xSign = (int)math.sign(inputDirection.x);
-            var ySign = (int)math.sign(inputDirection.y);
-
             ecb.SetComponent(vehicleEntity, new VehicleSteering { DesiredSteeringAngle = 0.5f * xSign });
-            ecb.SetComponent(vehicleEntity, new VehicleSpeed { DesiredSpeed = 3.0f * ySign });
+
+            //
+            var ySign = (int)math.sign(inputDirection.y);
+            var currentSpeed = state.EntityManager.GetComponentData<VehicleSpeedData>(vehicleEntity).CurrentSpeed;
+            ecb.SetComponent(vehicleEntity, new VehicleSpeedData
+            {
+                ThrottleInputState = ySign,
+                CurrentSpeed = currentSpeed,
+            });
         }
     }
 }

@@ -90,12 +90,8 @@ namespace VehicleModule.Controller
                 }
 
                 // get speed
-                float driveDesiredSpeed = 0f;
-                if (SystemAPI.HasComponent<VehicleSpeed>(vehicleEntity))
-                {
-                    var vehicleSpeedData = SystemAPI.GetComponent<VehicleSpeed>(vehicleEntity);
-                    driveDesiredSpeed = vehicleSpeedData.DesiredSpeed * 8f;
-                }
+                var vehicleSpeedData = SystemAPI.GetComponent<VehicleSpeedData>(vehicleEntity);
+                var currentSpeed = vehicleSpeedData.CurrentSpeed;
 
                 // Apply physics
                 if (wheelHit)
@@ -110,7 +106,7 @@ namespace VehicleModule.Controller
                     // forward
                     {
                         float currentSpeedForward = math.dot(wheelVelocity, wheelForward);
-                        float deltaSpeedForward = driveDesiredSpeed - currentSpeedForward;
+                        float deltaSpeedForward = currentSpeed - currentSpeedForward;
                         impulse += deltaSpeedForward * wheelForward;
 
                         // +friction
