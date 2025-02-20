@@ -13,13 +13,18 @@ namespace MovementModule.Controller
             var deltaTime = SystemAPI.Time.DeltaTime;
 
             // without physics
-            new MoveJob
             {
-                DeltaTime = deltaTime
-            }.Schedule();
+                new MoveJob
+                {
+                    DeltaTime = deltaTime
+                }.Schedule();
+            }
 
             // with physics
-            new MovePhysicsJob().Schedule();
+            if (false)
+            {
+                new MovePhysicsJob().Schedule();
+            }
         }
     }
 }

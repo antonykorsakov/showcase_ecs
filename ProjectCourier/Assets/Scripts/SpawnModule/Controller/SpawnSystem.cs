@@ -1,7 +1,5 @@
 using InputModule.Data;
-using MovementModule.Data;
 using SpawnModule.Data;
-using SpeedModifiersModule.Data;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -51,6 +49,7 @@ namespace SpawnModule.Controller
 
                 var config = SystemAPI.GetSingleton<SpawnConfigData>();
                 var random = Random.CreateFromIndex((uint)state.GlobalSystemVersion);
+
                 var y = config.SpawnPositionY;
 
                 if (SystemAPI.HasComponent<CharacterSpawnerTag>(entity))
@@ -62,14 +61,10 @@ namespace SpawnModule.Controller
                         var z = random.NextFloat(-5, 5);
                         ecb.SetComponent(character, LocalTransform.FromPosition(x, y, z));
 
-                        ecb.AddComponent<MoveDirectionData>(character);
-                        ecb.AddComponent<MoveSpeedData>(character);
-                        ecb.AddComponent(character, new SpeedDecayData { Value = 0.01f });
-
                         switch (_counter1)
                         {
                             case 0:
-                                ecb.AddComponent<InputControlledTag>(character);
+                                ecb.AddComponent<PlayerControlTag>(character);
                                 break;
 
                             case >= 3:
@@ -80,24 +75,17 @@ namespace SpawnModule.Controller
                         _counter1++;
                     }
                 }
-                else if (SystemAPI.HasComponent<CarSpawnerTag>(entity))
+                else if (SystemAPI.HasComponent<VehicleSpawnerTag>(entity))
                 {
                     if ((_spawnState & 0b010) == 0)
                     {
-                        var car = ecb.Instantiate(prefab);
-                        var x = random.NextFloat(-5, 5);
-                        var z = random.NextFloat(-5, 5);
-                        ecb.SetComponent(car, LocalTransform.FromPosition(x, y, z));
-
-                        ecb.AddComponent<InteractableTag>(car);
-                        ecb.AddComponent<MoveDirectionData>(car);
-                        ecb.AddComponent<MoveSpeedData>(car);
-                        ecb.AddComponent(car, new SpeedDecayData { Value = 0.01f });
-                        // ecb.AddComponent(car, new MoveSpeedConfig { Value = 1.2f });
+                        var vehicle = ecb.Instantiate(prefab);
+                        ecb.SetComponent(vehicle, LocalTransform.FromPosition(-4, y, -4));
+                        ecb.AddComponent<InteractableTag>(vehicle);
 
                         switch (_counter2)
                         {
-                            case >= 1:
+                            case >= 0:
                                 _spawnState |= 0b010;
                                 break;
                         }
@@ -110,8 +98,8 @@ namespace SpawnModule.Controller
                     if ((_spawnState & 0b100) == 0)
                     {
                         var tree = ecb.Instantiate(prefab);
-                        var x = random.NextFloat(-5, 5);
-                        var z = random.NextFloat(-5, 5);
+                        var x = random.NextFloat(0, 10);
+                        var z = random.NextFloat(-5, 10);
                         ecb.SetComponent(tree, LocalTransform.FromPosition(x, y, z));
 
                         switch (_counter3)

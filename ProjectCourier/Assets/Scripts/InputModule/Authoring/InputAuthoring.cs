@@ -14,9 +14,9 @@ namespace InputModule.Authoring
         {
             public override void Bake(InputAuthoring authoring)
             {
-                var entity = GetEntity(TransformUsageFlags.None);
-                AddComponentObject(entity, authoring._inputActionAsset);
-                AddComponent<InputTag>(entity);
+                var inputEntity = GetEntity(TransformUsageFlags.None);
+                AddComponent<InputTag>(inputEntity);
+                AddComponentObject(inputEntity, authoring._inputActionAsset);
             }
         }
     }
