@@ -2,6 +2,6 @@ using Unity.Entities;
 
 namespace InputModule.Data
 {
-    public struct InputTag : IComponentData
+    public struct PlayerControlTag : IComponentData
     { }
 }

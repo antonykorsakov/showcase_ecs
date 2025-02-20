@@ -27,9 +27,9 @@ namespace SpawnModule.Controller
                 Prefab = spawnConfigData.CharacterPrefab
             });
 
-            var carSpawnEntity = state.EntityManager.CreateEntity();
-            state.EntityManager.AddComponent<CarSpawnerTag>(carSpawnEntity);
-            state.EntityManager.AddComponentData(carSpawnEntity, new RequestEntityPrefabLoaded
+            var vehicleSpawnEntity = state.EntityManager.CreateEntity();
+            state.EntityManager.AddComponent<VehicleSpawnerTag>(vehicleSpawnEntity);
+            state.EntityManager.AddComponentData(vehicleSpawnEntity, new RequestEntityPrefabLoaded
             {
                 Prefab = spawnConfigData.CarPrefab
             });
