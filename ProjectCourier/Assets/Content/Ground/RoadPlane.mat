@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PhysicsStatic Road
+  m_Name: RoadPlane
   m_Shader: {fileID: -6465566751694194690, guid: be75cb67b92a5224cac54655ec3d6231, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
