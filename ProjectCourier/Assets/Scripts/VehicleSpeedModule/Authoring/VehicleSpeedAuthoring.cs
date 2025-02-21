@@ -9,13 +9,15 @@ namespace VehicleSpeedModule.Authoring
 #if UNITY_EDITOR
     public class VehicleSpeedAuthoring : MonoBehaviour
     {
-        [SerializeField] private float2 _maxInterval = new(-15f, 80f);
+        [SerializeField] private float2 _maxInterval = new(-20f, 35f);
         [SerializeField] private float _activeAcceleration = 30.0f;
-        [SerializeField] private float _idleDeceleration = 20.0f;
+        [SerializeField] private float _activeDeceleration = 150.0f;
+        [SerializeField] private float _idleDeceleration = 10.0f;
 
         private void OnValidate()
         {
             Assert.IsTrue(_activeAcceleration > 0);
+            Assert.IsTrue(_activeDeceleration > 0);
             Assert.IsTrue(_idleDeceleration > 0);
         }
 
@@ -29,6 +31,7 @@ namespace VehicleSpeedModule.Authoring
                 {
                     MaxInterval = authoring._maxInterval,
                     ActiveAcceleration = authoring._activeAcceleration,
+                    ActiveDeceleration = authoring._activeDeceleration,
                     IdleDeceleration = authoring._idleDeceleration,
                 });
             }

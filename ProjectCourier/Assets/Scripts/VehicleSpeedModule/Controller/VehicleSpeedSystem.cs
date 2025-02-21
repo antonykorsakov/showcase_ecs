@@ -1,6 +1,5 @@
 using Unity.Entities;
 using Unity.Mathematics;
-using VehicleModule.Data;
 using VehicleSpeedModule.Data;
 
 namespace VehicleSpeedModule.Controller
@@ -23,28 +22,36 @@ namespace VehicleSpeedModule.Controller
             foreach (var (data, config)
                      in SystemAPI.Query<RefRW<VehicleSpeedData>, RefRO<VehicleSpeedConfig>>())
             {
-                float lowerBound = config.ValueRO.MaxInterval[0];
-                float upperBound = config.ValueRO.MaxInterval[1];
-                float accelerate;
+                var lowerBound = config.ValueRO.MaxInterval[0];
+                var upperBound = config.ValueRO.MaxInterval[1];
 
-                switch (data.ValueRW.InputState)
+                var accelerate = data.ValueRW.InputState switch
                 {
-                    case 1:
-                        accelerate = config.ValueRO.ActiveAcceleration;
-                        break;
+                    > 0 => data.ValueRW.Value >= 0
+                        ? config.ValueRO.ActiveAcceleration
+                        : config.ValueRO.ActiveDeceleration,
 
-                    case -1:
-                        accelerate = -config.ValueRO.ActiveAcceleration;
-                        break;
+                    < 0 => data.ValueRW.Value <= 0
+                        ? -config.ValueRO.ActiveAcceleration
+                        : -config.ValueRO.ActiveDeceleration,
 
-                    // Idle
-                    default:
-                        accelerate = -config.ValueRO.IdleDeceleration;
-                        break;
-                }
+                    _ => data.ValueRW.Value >= 0
+                        ? -config.ValueRO.IdleDeceleration
+                        : config.ValueRO.IdleDeceleration,
+                };
 
                 float value = data.ValueRW.Value + accelerate * deltaTime;
-                data.ValueRW.Value = math.clamp(value, lowerBound, upperBound);
+                value = data.ValueRW.Value switch
+                {
+                    > 0.01f => math.clamp(value, 0, upperBound),
+                    < -0.01f => math.clamp(value, lowerBound, 0),
+                    _ => math.clamp(value, lowerBound, upperBound),
+                };
+
+                if (math.abs(value) < 0.001f)
+                    value = 0f;
+
+                data.ValueRW.Value = value;
             }
         }
     }

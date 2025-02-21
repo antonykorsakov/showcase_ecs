@@ -7,6 +7,7 @@ namespace VehicleSpeedModule.Data
     {
         public float2 MaxInterval;
         public float ActiveAcceleration;
+        public float ActiveDeceleration;
         public float IdleDeceleration;
     }
 }

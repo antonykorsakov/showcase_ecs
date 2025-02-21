@@ -1657,10 +1657,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxInterval:
-    x: -15
-    y: 80
+    x: -20
+    y: 35
   _activeAcceleration: 30
-  _idleDeceleration: 20
+  _activeDeceleration: 150
+  _idleDeceleration: 10
 --- !u!114 &4590865223921787709
 MonoBehaviour:
   m_ObjectHideFlags: 0
