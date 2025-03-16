@@ -86,27 +86,27 @@ namespace VehicleModule.Controller
                 var wheelPosition = wheelHit ? wheelRayResult.Position : wheelRay.End;
                 var wheelVelocity = world.GetLinearVelocity(vehicleIndex, wheelPosition);
                 
-                #region Suspension
-                {
-                    // Calculate and apply the impulses
-                    var posA = rayEnd;
-                    var posB = rayResult.Position;
-                    var lvA = currentSpeedUp * wheelUp;
-                    var lvB = world.GetLinearVelocity(rayResult.RigidBodyIndex, posB);
-
-                    var impulse = mechanics.suspensionStrength * (posB - posA) + mechanics.suspensionDamping * (lvB - lvA);
-                    impulse = impulse * invWheelCount;
-                    float impulseUp = math.dot(impulse, wheelUp);
-
-                    // Suspension shouldn't necessarily pull the vehicle down!
-                    float downForceLimit = -0.25f;
-                    if (downForceLimit < impulseUp)
-                    {
-                        impulse = impulseUp * wheelUp;
-                        world.ApplyImpulse(vehicleIndex, impulse, posA);
-                    }
-                }
-                #endregion
+                // #region Suspension
+                // {
+                //     // Calculate and apply the impulses
+                //     var posA = rayEnd;
+                //     var posB = rayResult.Position;
+                //     var lvA = currentSpeedUp * wheelUp;
+                //     var lvB = world.GetLinearVelocity(rayResult.RigidBodyIndex, posB);
+                //
+                //     var impulse = mechanics.suspensionStrength * (posB - posA) + mechanics.suspensionDamping * (lvB - lvA);
+                //     impulse = impulse * invWheelCount;
+                //     float impulseUp = math.dot(impulse, wheelUp);
+                //
+                //     // Suspension shouldn't necessarily pull the vehicle down!
+                //     float downForceLimit = -0.25f;
+                //     if (downForceLimit < impulseUp)
+                //     {
+                //         impulse = impulseUp * wheelUp;
+                //         world.ApplyImpulse(vehicleIndex, impulse, posA);
+                //     }
+                // }
+                // #endregion
 
                 // Apply rotate steering wheels
                 if (wheelData.ValueRO.UsedForSteering != 0)
