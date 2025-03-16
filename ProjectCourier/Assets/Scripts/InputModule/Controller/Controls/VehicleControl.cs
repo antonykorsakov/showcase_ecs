@@ -2,6 +2,8 @@ using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine.InputSystem;
 using VehicleModule.Data;
+using VehicleSpeedModule.Data;
+using VehicleSteeringModule.Data;
 
 namespace InputModule.Controller.Controls
 {
