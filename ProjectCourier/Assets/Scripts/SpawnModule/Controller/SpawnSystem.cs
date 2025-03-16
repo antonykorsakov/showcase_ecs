@@ -1,4 +1,5 @@
 using InputModule.Data;
+using InteractableModule.Data;
 using SpawnModule.Data;
 using Unity.Burst;
 using Unity.Collections;
@@ -81,7 +82,7 @@ namespace SpawnModule.Controller
                     {
                         var vehicle = ecb.Instantiate(prefab);
                         ecb.SetComponent(vehicle, LocalTransform.FromPosition(-4, y, -4));
-                        ecb.AddComponent<InteractableTag>(vehicle);
+                        ecb.AddComponent<InteractableData>(vehicle);
 
                         switch (_counter2)
                         {
@@ -126,7 +127,7 @@ namespace SpawnModule.Controller
 
         private void MyDebug(ref SystemState state)
         {
-            var query = state.EntityManager.CreateEntityQuery(typeof(InteractableTag));
+            var query = state.EntityManager.CreateEntityQuery(typeof(InteractableData));
             var cars = query.ToEntityArray(Allocator.Temp);
             foreach (var car in cars)
             {

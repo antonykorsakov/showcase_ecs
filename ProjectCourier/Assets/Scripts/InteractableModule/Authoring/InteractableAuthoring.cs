@@ -1,8 +1,8 @@
-using InputModule.Data;
+using InteractableModule.Data;
 using Unity.Entities;
 using UnityEngine;
 
-namespace InputModule.Authoring
+namespace InteractableModule.Authoring
 {
 #if UNITY_EDITOR
     public class InteractableAuthoring : MonoBehaviour
@@ -12,7 +12,7 @@ namespace InputModule.Authoring
             public override void Bake(InteractableAuthoring authoring)
             {
                 var inputEntity = GetEntity(TransformUsageFlags.None);
-                AddComponent<InteractableTag>(inputEntity);
+                AddComponent<InteractableData>(inputEntity);
             }
         }
     }
