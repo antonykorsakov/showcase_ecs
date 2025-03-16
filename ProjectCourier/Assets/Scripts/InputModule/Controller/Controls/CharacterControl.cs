@@ -25,22 +25,27 @@ namespace InputModule.Controller.Controls
 
             if (interactAction.IsPressed())
             {
-                var interactableType = ComponentType.ReadOnly<InteractableTag>();
-                var interactableQuery = state.EntityManager.CreateEntityQuery(interactableType);
-                var interactableEntities = interactableQuery.ToEntityArray(Allocator.TempJob);
-
-                foreach (var interactEntity in interactableEntities)
-                {
-                    if (interactEntity == characterEntity)
-                        continue;
-
-                    ecb.AddComponent<PlayerControlTag>(interactEntity);
-                    ecb.RemoveComponent<PlayerControlTag>(characterEntity);
-                    break;
-                }
-
-                interactableEntities.Dispose();
             }
+
+            // change CHARACTER to VEHICLE
+            // if (interactAction.IsPressed())
+            // {
+            //     var interactableType = ComponentType.ReadOnly<InteractableTag>();
+            //     var interactableQuery = state.EntityManager.CreateEntityQuery(interactableType);
+            //     var interactableEntities = interactableQuery.ToEntityArray(Allocator.TempJob);
+            //
+            //     foreach (var interactEntity in interactableEntities)
+            //     {
+            //         if (interactEntity == characterEntity)
+            //             continue;
+            //
+            //         ecb.AddComponent<PlayerControlTag>(interactEntity);
+            //         ecb.RemoveComponent<PlayerControlTag>(characterEntity);
+            //         break;
+            //     }
+            //
+            //     interactableEntities.Dispose();
+            // }
         }
     }
 }

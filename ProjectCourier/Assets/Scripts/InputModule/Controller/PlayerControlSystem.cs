@@ -20,7 +20,7 @@ namespace InputModule.Controller
             var inputActionAsset = state.EntityManager.GetComponentObject<InputActionAsset>(entity);
             if (inputActionAsset == null)
                 return;
-
+            
             InputAction moveAction = EnableAction(inputActionAsset, "Move");
             InputAction sprintAction = EnableAction(inputActionAsset, "Sprint");
             InputAction interactAction = EnableAction(inputActionAsset, "Interact");
