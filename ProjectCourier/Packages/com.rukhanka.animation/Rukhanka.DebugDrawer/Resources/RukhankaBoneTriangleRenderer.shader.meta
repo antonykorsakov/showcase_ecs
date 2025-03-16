@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 8a31c23bbc6707840909300a8dc37eec
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 298480
+  packageName: Rukhanka Animation System 2
+  packageVersion: 2.1.0
+  assetPath: Packages/com.rukhanka.animation/Rukhanka.DebugDrawer/Resources/RukhankaBoneTriangleRenderer.shader
+  uploadId: 736922

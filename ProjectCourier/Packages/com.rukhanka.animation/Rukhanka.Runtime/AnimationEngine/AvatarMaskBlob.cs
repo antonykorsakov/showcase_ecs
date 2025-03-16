@@ -5,14 +5,18 @@ using Unity.Entities;
 
 namespace Rukhanka
 {
-public struct AvatarMaskBlob
+public struct AvatarMaskBlob: GenericAssetBlob
 {
 #if RUKHANKA_DEBUG_INFO
 	public BlobString name;
+	public string Name() => name.ToString();
 	public BlobArray<BlobString> includedBoneNames;
 	public float bakingTime;
+	public float BakingTime() => bakingTime;
 #endif
 	public Hash128 hash;
+	public Hash128 Hash() => hash;
+    
 	public BlobArray<uint> includedBoneMask;
 	public uint humanBodyPartsAvatarMask;
 	

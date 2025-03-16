@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 0ba630dd5f0880b48b0ddc2e0755b443
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 298480
+  packageName: Rukhanka Animation System 2
+  packageVersion: 2.1.0
+  assetPath: Packages/com.rukhanka.animation/Rukhanka.DebugDrawer/Resources/RukhankaBoneOutlineRenderer.shader
+  uploadId: 736922

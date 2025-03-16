@@ -73,7 +73,7 @@ public partial struct SkinnedMeshPreparationSystem: ISystem
 	unsafe JobHandle ResetNewFrameData(ref SystemState ss, ref DeformationRuntimeData drd, JobHandle dependsOn)
 	{
 		var frameSkinnedMeshesQuery = SystemAPI.QueryBuilder()
-			.WithAll<Rukhanka.SkinMatrix>()
+            .WithAny<Rukhanka.SkinMatrix, Rukhanka.BlendShapeWeight>()
 			.Build();
 		
 		var resetFrameDataJob = new ResetFrameDataJob()

@@ -19,6 +19,8 @@ MonoImporter:
       type: 3}
   - conditionBlobInfoAsset: {fileID: 9197481963319205126, guid: f3041ef93fd36cc42a5e9f6b1bb2cb3c,
       type: 3}
+  - listViewLabelAsset: {fileID: 9197481963319205126, guid: 5460ee29626c92b47a703070f7c106ba,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
@@ -28,6 +30,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 298480
   packageName: Rukhanka Animation System 2
-  packageVersion: 2.0.0
+  packageVersion: 2.1.0
   assetPath: Packages/com.rukhanka.animation/Rukhanka.Editor/BlobInspector/AnimatorControllerBlobInfoWindow/AnimatorControllerBlobInfoWindow.cs
-  uploadId: 721186
+  uploadId: 736922

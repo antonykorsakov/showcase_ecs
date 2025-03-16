@@ -35,7 +35,7 @@ public partial class SkinnedMeshBaker: Baker<SkinnedMeshRenderer>
 		if (a.sharedMesh == null)
 			return;
 		
-		var smrHash = new Hash128((uint)a.sharedMesh.GetInstanceID(), 0, 0, 0);
+		var smrHash = CalculateSkinnedMeshHash(a.sharedMesh);
 		var e = GetEntity(a, TransformUsageFlags.Renderable);
 		
 		var isSMSBlobExists = TryGetBlobAssetReference<SkinnedMeshInfoBlob>(smrHash, out var smrBlobAsset);
@@ -88,6 +88,18 @@ public partial class SkinnedMeshBaker: Baker<SkinnedMeshRenderer>
         CreateSkinMatricesBuffer(a);
         CreateBlendShapeWeightsBuffer(a);
 	#endif
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	Hash128 CalculateSkinnedMeshHash(Mesh m)
+	{
+		var rv = new Hash128();
+	#if UNITY_EDITOR
+		var assetId = BakingUtils.GetAssetID(m);
+		rv = new Hash128(assetId.x, assetId.y, 0, 0);
+	#endif
+		return rv;
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

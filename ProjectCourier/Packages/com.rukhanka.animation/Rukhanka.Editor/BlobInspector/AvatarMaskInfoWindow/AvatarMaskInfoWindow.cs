@@ -16,7 +16,7 @@ public class AvatarMaskInfoWindow : EditorWindow
     [SerializeField]
     private VisualTreeAsset entityRefAsset = default;
     
-    internal static BlobInspector.BlobAssetInfo avatarMaskBlob;
+    internal static BlobInspector.BlobAssetInfo<AvatarMaskBlob> avatarMaskBlob;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -34,7 +34,7 @@ public class AvatarMaskInfoWindow : EditorWindow
 
     unsafe void FillAvatarMaskInfo()
     {
-        ref var b = ref avatarMaskBlob.blobAsset.Reinterpret<AvatarMaskBlob>().Value;
+        ref var b = ref avatarMaskBlob.blobAsset.Value;
         var hashLabel = rootVisualElement.Q<Label>("hashLabel");
         hashLabel.text = b.hash.ToString();
         

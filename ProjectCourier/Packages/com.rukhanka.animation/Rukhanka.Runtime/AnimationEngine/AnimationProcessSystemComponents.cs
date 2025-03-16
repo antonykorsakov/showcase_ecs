@@ -56,6 +56,16 @@ public struct AnimatedSkinnedMeshComponent: IComponentData
 #if RUKHANKA_WITH_NETCODE
 [GhostComponent(PrefabType = GhostPrefabType.Client)]
 #endif
+public struct SkinnedMeshRenderEntity: IBufferElementData
+{
+	public Entity value;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#if RUKHANKA_WITH_NETCODE
+[GhostComponent(PrefabType = GhostPrefabType.Client)]
+#endif
 public struct AnimatedRendererComponent: IComponentData
 {
 	public Entity animatorEntity;

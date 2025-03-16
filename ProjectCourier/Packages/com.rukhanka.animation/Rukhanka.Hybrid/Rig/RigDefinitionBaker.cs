@@ -167,12 +167,34 @@ public partial class RigDefinitionBaker: Baker<RigDefinitionAuthoring>
 		}
 		
 		var skeleton = avatar.humanDescription.skeleton;
+		
+		//	Validate avatar optimization mask
+		var rigOptimizationMask = rigDef.avatarOptimizationMask;
+		if (rigOptimizationMask != null)
+		{
+			if (rigOptimizationMask.transformCount != skeleton.Length)
+			{
+				Debug.LogWarning($"'{rigOptimizationMask.name}' bone count ({rigOptimizationMask.transformCount}) does not match rig avatar '{avatar.name}' bone count ({skeleton.Length}). Avatar mask was created for different avatar and ignored.");
+				rigOptimizationMask = null;
+			}
+		}
+		
+		
 		var rv = new List<InternalSkeletonBone>();
 		for (var i = 0; i < skeleton.Length; ++i)
 		{
 			var boneIsObjectRoot = i == 0;
 			
 			var sb = skeleton[i];
+			
+			if (rigOptimizationMask != null)
+			{
+				var maskPath = rigOptimizationMask.GetTransformPath(i);
+				var pathActive = rigOptimizationMask.GetTransformActive(i);
+				if (maskPath.EndsWith(sb.name) && !pathActive)
+					continue;
+			}
+			
 			var isb = new InternalSkeletonBone()
 			{
 				boneTransform = boneIsObjectRoot ? rigDef.transform : TransformUtils.FindChildRecursively(rigDef.transform, sb.name),

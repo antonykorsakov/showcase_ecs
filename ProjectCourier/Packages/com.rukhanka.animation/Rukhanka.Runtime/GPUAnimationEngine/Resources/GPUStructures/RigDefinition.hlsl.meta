@@ -9,6 +9,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 298480
   packageName: Rukhanka Animation System 2
-  packageVersion: 2.0.0
+  packageVersion: 2.1.0
   assetPath: Packages/com.rukhanka.animation/Rukhanka.Runtime/GPUAnimationEngine/Resources/GPUStructures/RigDefinition.hlsl
-  uploadId: 721186
+  uploadId: 736922

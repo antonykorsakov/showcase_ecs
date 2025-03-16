@@ -105,20 +105,11 @@ public class DrawerManagedSingleton: IComponentData
 
 	void CreateMaterials()
 	{
-	#if HDRP_10_0_0_OR_NEWER
-		var srpName = "HDRP";
-	#elif URP_10_0_0_OR_NEWER
-		var srpName = "URP";
-	#else
-		Debug.LogError("No scriptable renderer pipeline found. Please install HDRP or URP.");
-		return;
-	#endif
-		
-        lineDrawMat = new Material(Shader.Find($"RukhankaDebugLineDrawer {srpName}"));
-        thickLinesDrawMat = new Material(Shader.Find($"RukhankaDebugThickLineDrawer {srpName}"));
-        trianglesDrawMat = new Material(Shader.Find($"RukhankaDebugTriangleDrawer {srpName}"));
-        boneTriDrawMat = new Material(Shader.Find($"RukhankaBoneTriangleRenderer {srpName}"));
-        boneOutlineDrawMat = new Material(Shader.Find($"RukhankaBoneOutlineRenderer {srpName}"));
+        lineDrawMat = new Material(Shader.Find($"RukhankaDebugLineDrawer"));
+        thickLinesDrawMat = new Material(Shader.Find($"RukhankaDebugThickLineDrawer"));
+        trianglesDrawMat = new Material(Shader.Find($"RukhankaDebugTriangleDrawer"));
+        boneTriDrawMat = new Material(Shader.Find($"RukhankaBoneTriangleRenderer"));
+        boneOutlineDrawMat = new Material(Shader.Find($"RukhankaBoneOutlineRenderer"));
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

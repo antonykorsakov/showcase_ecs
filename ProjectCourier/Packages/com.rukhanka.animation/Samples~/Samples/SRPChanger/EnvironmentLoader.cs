@@ -56,7 +56,6 @@ public class EnvironmentLoader: MonoBehaviour
 
 		var sampleMaterials = new List<string>();
 		sampleMaterials.AddRange(AssetDatabase.FindAssets("t:material", new[] { "Assets/Samples/Rukhanka Animation System 2" }));
-		sampleMaterials.AddRange(AssetDatabase.FindAssets("t:material", new[] { "Assets/RukhankaAnimationSystem/Samples" }));
 		
 		foreach (var sa in sampleMaterials)
 		{

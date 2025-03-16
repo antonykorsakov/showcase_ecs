@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: bb2f065a901b03849884dd1e9f12bb7c
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 298480
+  packageName: Rukhanka Animation System 2
+  packageVersion: 2.1.0
+  assetPath: Packages/com.rukhanka.animation/Rukhanka.Editor/BetterShaders/StackableRukhankaDeformationMotionVectors.surfshader
+  uploadId: 736922
