@@ -23,7 +23,7 @@ public class AnimatorClipBlobInfoWindow : EditorWindow
     [SerializeField]
     private VisualTreeAsset entityRefAsset = default;
     
-    internal static BlobInspector.BlobAssetInfo animationClipBlob;
+    internal static BlobInspector.BlobAssetInfo<AnimationClipBlob> animationClipBlob;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -41,7 +41,7 @@ public class AnimatorClipBlobInfoWindow : EditorWindow
     
     unsafe void FillBlobInfo()
     {
-        ref var b = ref animationClipBlob.blobAsset.Reinterpret<AnimationClipBlob>().Value;
+        ref var b = ref animationClipBlob.blobAsset.Value;
         var hashLabel = rootVisualElement.Q<Label>("hashLabel");
         hashLabel.text = b.hash.ToString();
         
@@ -68,7 +68,6 @@ public class AnimatorClipBlobInfoWindow : EditorWindow
         var loopPoseBlendCheckBox = rootVisualElement.Q<Toggle>("loopPoseBlendCheckBox");
         loopPoseBlendCheckBox.SetEnabled(false);
         loopPoseBlendCheckBox.value = b.loopPoseBlend;
-        
         
         var sizeLabel = rootVisualElement.Q<Label>("sizeLabel");
         sizeLabel.text = CommonTools.FormatMemory(animationClipBlob.blobAsset.m_data.Header->Length);
@@ -178,7 +177,7 @@ public class AnimatorClipBlobInfoWindow : EditorWindow
                 nameLabel.text = "-";
             #endif
                 
-                hashLabel.text = t.props.ToString();
+                hashLabel.text = t.props.ToString("X");
                 bindingTypeLabel.text = t.bindingType.ToString();
                 channelIndexLabel.text = t.channelIndex.ToString();
                 keyFrameInfoLabel.text = $"Start:Length [{t.keyFrameRange.x}:{t.keyFrameRange.y}]";

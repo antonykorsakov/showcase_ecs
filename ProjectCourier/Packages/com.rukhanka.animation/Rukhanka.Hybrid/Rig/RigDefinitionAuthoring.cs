@@ -9,8 +9,11 @@ using Hash128 = Unity.Entities.Hash128;
 namespace Rukhanka.Hybrid
 {
 [HelpURL("https://docs.rukhanka.com/getting_started#rig-definition")]
+[Icon(iconPath)]
 public class RigDefinitionAuthoring: MonoBehaviour
 {
+    const string iconPath = "Packages/com.rukhanka.animation/Rukhanka.Editor/Editor Default Resources/Icons/Icon@64.png";
+    
     public enum BoneEntityStrippingMode
     {
         None,
@@ -32,6 +35,7 @@ public class RigDefinitionAuthoring: MonoBehaviour
 
     public RigConfigSource rigConfigSource;
     public Avatar avatar;
+    public AvatarMask avatarOptimizationMask;
     public bool applyRootMotion;
     public bool animationCulling;
     

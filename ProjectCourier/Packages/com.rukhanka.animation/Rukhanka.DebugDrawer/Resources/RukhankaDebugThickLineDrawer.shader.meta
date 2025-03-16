@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: b9307aa646e418947a018286eb2cfdc8
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 298480
+  packageName: Rukhanka Animation System 2
+  packageVersion: 2.1.0
+  assetPath: Packages/com.rukhanka.animation/Rukhanka.DebugDrawer/Resources/RukhankaDebugThickLineDrawer.shader
+  uploadId: 736922

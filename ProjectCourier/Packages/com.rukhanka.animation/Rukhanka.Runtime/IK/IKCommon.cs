@@ -28,10 +28,13 @@ public static class IKCommon
                 var bt = boneWorldPoses[aer.boneIndexInAnimationRig];
                 t = BoneTransform.Multiply(bt, t);
             }
-            return;
+            //  We have got rig relative position so must continue with parent entities of animated rig
+            e = aer.animatorEntity;
         }
-
-        t = BoneTransform.Multiply(new BoneTransform(lt), t);
+        else
+        {
+            t = BoneTransform.Multiply(new BoneTransform(lt), t);
+        }
 
         if (pl.TryGetComponent(e, out var p))
         {

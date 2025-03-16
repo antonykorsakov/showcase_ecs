@@ -238,6 +238,7 @@ public partial class AnimatorControllerBaker: Baker<Animator>
 		acc.rtd = RuntimeAnimatorData.MakeDefault();
 		acc.controller = controllerBlob;
 		acc.animations = controllerAnimationsBlob;
+		acc.speed = 1;
 
 		var buf = AddBuffer<AnimatorControllerLayerComponent>(e);
 		ref var cb = ref controllerBlob.Value;

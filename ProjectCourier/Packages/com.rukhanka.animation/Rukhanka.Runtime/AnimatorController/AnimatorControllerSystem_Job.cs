@@ -261,6 +261,9 @@ public struct StateMachineProcessJob: IJobChunk
 		var currentStateID = acc.rtd.srcState.id;
 		if (currentStateID < 0)
 			currentStateID = layer.defaultStateIndex;
+		
+		//	Adjust delta time according to the layer animator speed
+		var layerDeltaTime = dt * acc.speed;
 
 		ref var currentState = ref layer.states[currentStateID];
 		var curStateDuration = CalculateStateDuration(ref currentState, runtimeParams);
@@ -271,19 +274,19 @@ public struct StateMachineProcessJob: IJobChunk
 			EmitEvent(ref events, AnimatorControllerEventComponent.EventType.StateEnter, acc.rtd.srcState.id, acc.layerIndex, acc.rtd.srcState.normalizedDuration);
 		}
 
-		var srcStateDurationFrameDelta = CalculateStateFrameDeltaSafe(dt, curStateDuration);
+		var srcStateDurationFrameDelta = CalculateStateFrameDeltaSafe(layerDeltaTime, curStateDuration);
 		acc.rtd.srcState.normalizedDuration += srcStateDurationFrameDelta;
 
 		if (acc.rtd.dstState.id >= 0)
 		{
 			var dstStateDuration = CalculateStateDuration(ref layer.states[acc.rtd.dstState.id], runtimeParams);
-			acc.rtd.dstState.normalizedDuration += CalculateStateFrameDeltaSafe(dt,  dstStateDuration);
+			acc.rtd.dstState.normalizedDuration += CalculateStateFrameDeltaSafe(layerDeltaTime,  dstStateDuration);
 		}
 
 		if (acc.rtd.activeTransition.id >= 0)
 		{
 			var transitionDuration = CalculateTransitionDuration(acc.rtd.activeTransition, curStateDuration);
-			acc.rtd.activeTransition.normalizedDuration += dt / transitionDuration;
+			acc.rtd.activeTransition.normalizedDuration += layerDeltaTime / transitionDuration;
 		}
 
 		ExitTransition(ref acc, ref events);

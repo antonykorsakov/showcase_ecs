@@ -59,7 +59,7 @@ public class Rukhanka_ComputeDeformationNode: ParentNode
 		var vertexIdName = m_inputPorts[0].GenerateShaderForOutput(ref dataCollector, WirePortDataType.INT, true);
 		dataCollector.AddVertexInstruction($"#if defined(UNITY_DOTS_INSTANCING_ENABLED)");
 	#if ENABLE_DOTS_DEFORMATION_MOTION_VECTORS
-		dataCollector.AddVertexInstruction($"ApplyDeformedVertexData({vertexIdName}, deformedPos, deformedNrm, deformedTan);");
+		dataCollector.AddVertexInstruction($"ApplyDeformedVertexData({vertexIdName}, deformedPos, deformedNrm, deformedTan.xyz);");
 	#else
 		dataCollector.AddVertexInstruction($"ComputeDeformedVertex({vertexIdName}, deformedPos, deformedNrm, deformedTan);");
 	#endif

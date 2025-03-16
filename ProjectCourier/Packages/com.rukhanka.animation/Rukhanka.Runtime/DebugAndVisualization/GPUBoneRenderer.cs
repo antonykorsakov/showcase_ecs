@@ -32,12 +32,7 @@ public class GPUBoneRenderer
 
 	public GPUBoneRenderer()
 	{
-	#if HDRP_10_0_0_OR_NEWER
-		var srpName = "HDRP";
-	#elif URP_10_0_0_OR_NEWER
-		var srpName = "URP";
-	#endif
-		boneDrawerMat = CoreUtils.CreateEngineMaterial(Shader.Find($"BoneRendererGPU_{srpName}"));
+		boneDrawerMat = CoreUtils.CreateEngineMaterial(Shader.Find($"BoneRendererGPU"));
 		boneDrawerMat.enableInstancing = true;
 		boneMesh = DrawerManagedSingleton.CreateBoneMesh();
 	}

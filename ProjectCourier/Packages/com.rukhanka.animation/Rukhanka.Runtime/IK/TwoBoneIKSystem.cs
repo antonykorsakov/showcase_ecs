@@ -78,6 +78,7 @@ public partial struct TwoBoneIKSystem: ISystem
             var deltaAngle = curBendAngle - targetBendAngle;
             var midRotDelta = quaternion.AxisAngle(bendAxis, deltaAngle);
             var midRot = math.mul(midRotDelta, midWorldPose.rot);
+            midRot = math.normalize(midRot);
             animStream.SetWorldRotation(midEntityRef.boneIndexInAnimationRig, midRot);
 
             tipWorldPose = animStream.GetWorldPose(tipEntityRef.boneIndexInAnimationRig);

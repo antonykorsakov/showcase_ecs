@@ -80,13 +80,13 @@ struct Track
 
     float SampleByLinearSearch(float time, int keyFrameBaseAddress)
     {
-        int keyFrameRangeEnd = keyFrameRange.x + keyFrameRange.y;
-		for (int i = keyFrameRange.x; i < keyFrameRangeEnd; ++i)
+        uint keyFrameRangeEnd = keyFrameRange.x + keyFrameRange.y;
+		for (uint i = keyFrameRange.x; i < keyFrameRangeEnd; ++i)
 		{
 			KeyFrame frame1 = KeyFrame::ReadFromRawBuffer(animationClips, keyFrameBaseAddress, i);
 			if (frame1.time >= time)
 			{
-				if (i == 0)
+				if (i == keyFrameRange.x)
 					return frame1.v;
 				KeyFrame frame0 = KeyFrame::ReadFromRawBuffer(animationClips, keyFrameBaseAddress, i - 1);
 

@@ -86,6 +86,7 @@ public partial class GPUAnimationSystem: SystemBase
 		gpuAnimatedRigQuery = new EntityQueryBuilder(Allocator.Temp)
 			.WithAll<RigDefinitionComponent, AnimationToProcessComponent, GPUAnimationEngineTag>()
 			.WithNone<CullAnimationsTag>()
+			.WithOptions(EntityQueryOptions.IncludeDisabledEntities)
 			.Build(EntityManager);
 		
 		Assert.IsTrue(UnsafeUtility.SizeOf<GPUStructures.KeyFrame>() == UnsafeUtility.SizeOf<KeyFrame>());

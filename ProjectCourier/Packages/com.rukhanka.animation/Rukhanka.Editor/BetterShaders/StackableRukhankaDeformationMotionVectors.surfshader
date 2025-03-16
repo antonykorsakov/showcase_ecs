@@ -1,0 +1,60 @@
+BEGIN_OPTIONS
+    Stackable "False"
+	ShaderName "Hidden/Rukhanka Animation/Deformation MotionVec" 
+END_OPTIONS
+
+BEGIN_PROPERTIES
+    [HideInInspector]_DotsDeformationParams("Compute Mesh Buffer Index Offset", Vector) = (0, 0, 0, 0)
+END_PROPERTIES
+
+
+BEGIN_CBUFFER
+    float4 _DotsDeformationParams;
+END_CBUFFER
+
+BEGIN_CODE
+
+#if defined(DOTS_INSTANCING_ON)
+// DOTS instancing definitions
+UNITY_DOTS_INSTANCING_START(MaterialPropertyMetadata)
+    UNITY_DOTS_INSTANCED_PROP(float4, _DotsDeformationParams)
+UNITY_DOTS_INSTANCING_END(MaterialPropertyMetadata)
+// DOTS instancing usage macros
+#define UNITY_ACCESS_HYBRID_INSTANCED_PROP(var, type) UNITY_ACCESS_DOTS_INSTANCED_PROP_WITH_DEFAULT(type, var)
+#elif defined(UNITY_INSTANCING_ENABLED)
+// Unity instancing definitions
+UNITY_INSTANCING_BUFFER_START(SGPerInstanceData)
+    UNITY_DEFINE_INSTANCED_PROP(float4, _DotsDeformationParams)
+UNITY_INSTANCING_BUFFER_END(SGPerInstanceData)
+// Unity instancing usage macros
+#define UNITY_ACCESS_HYBRID_INSTANCED_PROP(var, type) UNITY_ACCESS_INSTANCED_PROP(SGPerInstanceData, var)
+#else
+#define UNITY_ACCESS_HYBRID_INSTANCED_PROP(var, type) var
+#endif
+
+
+struct DeformedVertexData
+{
+    float3 Position;
+    float3 Normal;
+    float3 Tangent;
+};
+uniform StructuredBuffer<DeformedVertexData> _DeformedMeshData : register(t1);
+
+void ModifyVertex(inout VertexData v, inout ExtraV2F d)
+{
+#if defined(UNITY_DOTS_INSTANCING_ENABLED)
+    const uint4 materialProperty = asuint(UNITY_ACCESS_HYBRID_INSTANCED_PROP(_DotsDeformationParams, float4));
+    const uint currentFrameIndex = materialProperty[2];
+    const uint meshStartIndex = materialProperty[currentFrameIndex];
+
+    const DeformedVertexData vertexData = _DeformedMeshData[meshStartIndex + v.vertexID];
+
+    v.vertex.xyz = vertexData.Position;
+    v.normal.xyz = vertexData.Normal;
+    v.tangent.xyz = vertexData.Tangent;
+#endif
+}
+
+END_CODE
+

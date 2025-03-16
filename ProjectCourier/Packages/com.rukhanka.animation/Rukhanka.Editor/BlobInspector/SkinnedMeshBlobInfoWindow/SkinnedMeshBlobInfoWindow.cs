@@ -18,7 +18,7 @@ public class SkinnedMeshBlobInfoWindow : EditorWindow
     [SerializeField]
     private VisualTreeAsset entityRefAsset = default;
     
-    internal static BlobInspector.BlobAssetInfo skinnedMeshBlob;
+    internal static BlobInspector.BlobAssetInfo<SkinnedMeshInfoBlob> skinnedMeshBlob;
     
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -36,7 +36,7 @@ public class SkinnedMeshBlobInfoWindow : EditorWindow
 
     unsafe void FillSkinnedMeshInfo()
     {
-        ref var b = ref skinnedMeshBlob.blobAsset.Reinterpret<SkinnedMeshInfoBlob>().Value;
+        ref var b = ref skinnedMeshBlob.blobAsset.Value;
         var hashLabel = rootVisualElement.Q<Label>("hashLabel");
         hashLabel.text = b.hash.ToString();
         

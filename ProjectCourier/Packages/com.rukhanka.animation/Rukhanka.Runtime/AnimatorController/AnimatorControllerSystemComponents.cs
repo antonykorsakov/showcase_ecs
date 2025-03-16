@@ -60,6 +60,7 @@ public struct AnimatorControllerLayerComponent: IBufferElementData, IEnableableC
 	public BlobAssetReference<ControllerAnimationsBlob> animations;
 	public int layerIndex;
 	public float weight;
+	public float speed;
 	public RuntimeAnimatorData rtd;
 }
 

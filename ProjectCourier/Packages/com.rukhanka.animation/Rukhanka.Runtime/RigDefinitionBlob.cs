@@ -53,13 +53,17 @@ public struct HumanData
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-public struct RigDefinitionBlob
+public struct RigDefinitionBlob: GenericAssetBlob
 {
 #if RUKHANKA_DEBUG_INFO
 	public BlobString name;
+	public string Name() => name.ToString();
 	public float bakingTime;
+	public float BakingTime() => bakingTime;
 #endif
 	public Hash128 hash;
+	public Hash128 Hash() => hash;
+	
 	public BlobArray<RigBoneInfo> bones;
 	public BlobPtr<HumanData> humanData;
 	public int rootBoneIndex;

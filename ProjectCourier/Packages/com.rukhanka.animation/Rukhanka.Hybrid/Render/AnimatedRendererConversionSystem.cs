@@ -47,12 +47,15 @@ public partial class AnimatedRendererBakingSystem : SystemBase
 			
 			if (animatedSkinnedMeshComponentLookup.HasComponent(e))
 			{
+				var smreb = ecb.AddBuffer<SkinnedMeshRenderEntity>(e);
+				
 				// Add AnimatedRendererComponent to its additional mesh render entities
 				if (additionalEntitiesBufferLookup.TryGetBuffer(e, out var additionalEntitiesBuf))
 				{
 					foreach (var ae in additionalEntitiesBuf)
 					{
 						ecb.AddComponent(ae.Value, arc);
+						smreb.Add(new SkinnedMeshRenderEntity() { value = ae.Value });
 						if (arbc.needUpdateRenderBounds)
 							ecb.AddComponent<ShouldUpdateBoundingBoxTag>(ae.Value);
 					}
@@ -101,7 +104,7 @@ public partial class AnimatedRendererBakingSystem : SystemBase
 		var ecb = new EntityCommandBuffer(CheckedStateRef.WorldUpdateAllocator);
 		var q = SystemAPI.QueryBuilder()
 			.WithAll<AnimatedRendererBakingComponent>()
-			.WithOptions(EntityQueryOptions.IncludePrefab)
+			.WithOptions(EntityQueryOptions.IncludePrefab | EntityQueryOptions.IncludeDisabledEntities)
 			.Build();
 		
 		var createAnimatedRendererComponentsJob = new CreateAnimatedRendererComponentsJob()

@@ -131,13 +131,17 @@ public struct TrackSet
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-public struct AnimationClipBlob
+public struct AnimationClipBlob: GenericAssetBlob
 {
 #if RUKHANKA_DEBUG_INFO
 	public BlobString name;
+	public string Name() => name.ToString();
 	public float bakingTime;
+	public float BakingTime() => bakingTime;
 #endif
 	public Hash128 hash;
+	public Hash128 Hash() => hash;
+	
 	public TrackSet clipTracks;
 	public TrackSet additiveReferencePoseFrame;
 	public BlobArray<AnimationEventBlob> events;
