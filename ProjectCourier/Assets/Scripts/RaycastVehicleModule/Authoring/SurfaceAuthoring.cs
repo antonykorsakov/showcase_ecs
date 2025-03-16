@@ -5,7 +5,7 @@ using VehicleModule.Data;
 namespace VehicleModule.Authoring
 {
 #if UNITY_EDITOR
-    public class SurfaceFrictionAuthoring : MonoBehaviour
+    public class SurfaceAuthoring : MonoBehaviour
     {
         /// <summary>
         /// Static friction coefficient.
@@ -23,12 +23,12 @@ namespace VehicleModule.Authoring
         /// </summary>
         [SerializeField] private float _dynamicFriction = 0.8f;
 
-        class Baker : Baker<SurfaceFrictionAuthoring>
+        class Baker : Baker<SurfaceAuthoring>
         {
-            public override void Bake(SurfaceFrictionAuthoring authoring)
+            public override void Bake(SurfaceAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.WorldSpace | TransformUsageFlags.Renderable);
-                AddComponent(entity, new SurfaceFrictionData
+                AddComponent(entity, new SurfaceData
                 {
                     StaticFriction = authoring._staticFriction,
                     DynamicFriction = authoring._dynamicFriction,

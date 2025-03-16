@@ -11,6 +11,10 @@ namespace VehicleModule.Authoring
 #if UNITY_EDITOR
     public class VehicleAuthoring : MonoBehaviour
     {
+        private float _restLength = 0.5f;
+        private int _springStiffness = 30000;
+        private float _wheelRadius = 0.33f;
+        
         [SerializeField] private GameObject _chassis;
         [SerializeField] private List<GameObject> _wheels = new();
         [SerializeField] private List<GameObject> _wheelsPivot = new();
@@ -23,6 +27,12 @@ namespace VehicleModule.Authoring
             {
                 var vehicleEntity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent<VehicleData>(vehicleEntity);
+                AddComponent(vehicleEntity, new VehicleConfig
+                {
+                    RestLength = authoring._restLength,
+                    SpringStiffness = authoring._springStiffness,
+                    WheelRadius = authoring._wheelRadius,
+                });
 
                 RigidTransform worldFromChassis = new()
                 {
@@ -48,7 +58,7 @@ namespace VehicleModule.Authoring
                     };
                     var chassisFromSuspension = math.mul(math.inverse(worldFromChassis), worldFromSuspension);
 
-                    buffer.Add(new WheelBakingData()
+                    buffer.Add(new WheelBakingData
                     {
                         Wheel = GetEntity(wheelSource, TransformUsageFlags.Dynamic),
                         GraphicalRepresentation = GetEntity(wheelGraphicalSource, TransformUsageFlags.Dynamic),

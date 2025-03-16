@@ -1,6 +1,7 @@
 using System;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Physics;
 using UnityEngine;
 using VehicleModule.Data;
 
@@ -40,7 +41,8 @@ namespace VehicleModule.Authoring
 
             // MyDebug(ref state, typeof(WheelData));
             // MyDebug(ref state, typeof(MoveDirectionData));
-            // MyDebug(ref state, typeof(VehicleData));
+            MyDebug(ref state, typeof(VehicleData));
+            MyDebug(ref state, typeof(PhysicsStep));
         }
 
         private void MyDebug(ref SystemState state, Type tag)
