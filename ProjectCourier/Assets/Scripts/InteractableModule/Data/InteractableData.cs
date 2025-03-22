@@ -7,6 +7,6 @@ namespace InteractableModule.Data
     /// </summary>
     public struct InteractableData : IComponentData
     {
-        public bool CanUse;
+        public bool IsLowDistance;
     }
 }

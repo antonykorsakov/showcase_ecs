@@ -1,85 +1,51 @@
-using InputModule.Data;
-using InteractableModule.Data;
+using PhysicsExpansionModule.Controller;
+using PhysicsExpansionModule.Core;
+using PhysicsExpansionModule.Data;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Physics;
 using Unity.Physics.Systems;
-using Unity.Transforms;
-using Unity.Mathematics;
+using UnityEngine;
 
 namespace InteractableModule.Controller
 {
-    [UpdateInGroup(typeof(SimulationSystemGroup))]
+    [UpdateInGroup(typeof(PhysicsSystemGroup))]
+    [UpdateAfter(typeof(StatefulTriggerEventBufferSystem))]
     public partial struct CollectInteractionSystem : ISystem
     {
-        private PhysicsWorld _physicsWorld;
-        
-        private EntityQuery _playerQuery;
-        private EntityQuery _interactableQuery;
-
-        public void OnCreate(ref SystemState state)
-        {
-            _physicsWorld = SystemAPI.GetSingletonRW<PhysicsWorldSingleton>().ValueRW.PhysicsWorld;
-            _playerQuery = state.GetEntityQuery(ComponentType.ReadOnly<PlayerControlTag>(), ComponentType.ReadOnly<LocalTransform>());
-            _interactableQuery = state.GetEntityQuery(ComponentType.ReadWrite<InteractableData>(), ComponentType.ReadOnly<LocalTransform>());
-        }
+        // [BurstCompile]
+        // public void OnCreate(ref SystemState state)
+        // {
+        //     // state.RequireForUpdate<SimulationSingleton>();
+        // }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            if (_playerQuery.IsEmpty || _interactableQuery.IsEmpty) 
-                return;
-            
-            var players = _playerQuery.ToComponentDataArray<LocalTransform>(Allocator.Temp);
-            var interactables = _interactableQuery.ToComponentDataArray<LocalTransform>(Allocator.Temp);
-            var interactableEntities = _interactableQuery.ToEntityArray(Allocator.Temp);
+            // var sim = SystemAPI.GetSingleton<SimulationSingleton>().AsSimulation();
 
-            var ecb = new EntityCommandBuffer(Allocator.Temp);
-
-            // Проход по интерактивным объектам
-            for (int i = 0; i < interactables.Length; i++)
+            foreach (var (triggerEventBuffer, entity)
+                     in SystemAPI.Query<DynamicBuffer<StatefulTriggerEvent>>().WithEntityAccess())
             {
-                bool canUse = false;
-                var interactablePos = interactables[i].Position;
-                const float interactionRadius = 2.0f; // Радиус взаимодействия
-
-                // Проверяем всех игроков
-                foreach (var player in players)
+                for (int i = 0; i < triggerEventBuffer.Length; i++)
                 {
-                    var playerPos = player.Position;
-                    if (math.distancesq(playerPos, interactablePos) <= interactionRadius * interactionRadius)
+                    var triggerEvent = triggerEventBuffer[i];
+                    var otherEntity = triggerEvent.GetOtherEntity(entity);
+
+                    switch (triggerEvent.State)
                     {
-                        // Проверяем наличие препятствий
-                        if (!IsBlockedByObstacle(playerPos, interactablePos, ref _physicsWorld))
-                        {
-                            canUse = true;
+                        case StatefulEventState.Enter:
+                        case StatefulEventState.Stay:
+                        case StatefulEventState.Exit:
+                            Debug.Log($"{triggerEvent.State} Trigger; " +
+                                      $"EntityA.index = {triggerEvent.EntityA.Index}; " +
+                                      $"BodyIndexA = {triggerEvent.BodyIndexA}; " +
+                                      $"EntityB.index = {triggerEvent.EntityB.Index}; " +
+                                      $"BodyIndexB = {triggerEvent.BodyIndexB};");
                             break;
-                        }
                     }
                 }
-
-                // Обновляем компонент
-                ecb.SetComponent(interactableEntities[i], new InteractableData { CanUse = canUse });
             }
-
-            ecb.Playback(state.EntityManager);
-        }
-
-        private static bool IsBlockedByObstacle(float3 from, float3 to, ref PhysicsWorld physicsWorld)
-        {
-            CollisionFilter filter = new CollisionFilter
-            {
-                BelongsTo = ~0u,  // Проверяем все слои
-                // CollidesWith = (uint)CollisionLayers.Obstacles // Только препятствия
-            };
-
-            return physicsWorld.CastRay(new RaycastInput
-            {
-                Start = from,
-                End = to,
-                Filter = filter
-            }, out _);
         }
     }
 }
