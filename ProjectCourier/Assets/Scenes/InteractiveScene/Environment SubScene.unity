@@ -298,6 +298,7 @@ GameObject:
   - component: {fileID: 1431590963}
   - component: {fileID: 1431590962}
   - component: {fileID: 1431590966}
+  - component: {fileID: 1431590967}
   m_Layer: 0
   m_Name: WoodSource
   m_TagString: Untagged
@@ -516,6 +517,18 @@ MonoBehaviour:
         Tag07: 0
     m_SerializedVersion: 1
   m_SerializedVersion: 1
+--- !u!114 &1431590967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1431590960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 604555688c994e62aebeb2b2598a32d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1455297691
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -585,6 +598,7 @@ GameObject:
   - component: {fileID: 1464525368}
   - component: {fileID: 1464525367}
   - component: {fileID: 1464525370}
+  - component: {fileID: 1464525371}
   m_Layer: 0
   m_Name: StoneSource
   m_TagString: Untagged
@@ -681,6 +695,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1464525371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1464525365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 604555688c994e62aebeb2b2598a32d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2032805599
 GameObject:
   m_ObjectHideFlags: 0
