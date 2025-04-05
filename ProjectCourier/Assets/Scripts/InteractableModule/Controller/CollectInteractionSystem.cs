@@ -30,6 +30,7 @@ namespace InteractableModule.Controller
                 for (int i = 0; i < triggerEventBuffer.Length; i++)
                 {
                     var triggerEvent = triggerEventBuffer[i];
+                    var entityA = triggerEvent.EntityA;
                     var entityB = triggerEvent.EntityB;
                     if (!SystemAPI.HasComponent<InteractableData>(entityB))
                         continue;
@@ -37,12 +38,22 @@ namespace InteractableModule.Controller
                     switch (triggerEvent.State)
                     {
                         case StatefulEventState.Enter:
-                            ecb.SetComponent(entityB, new InteractableData { IsLowDistance = true });
+                        {
+                            // var buffer = SystemAPI.GetBuffer<NearbyEntityBufferElement>(entityA);
+                            // var isContains = IsContains(buffer, entityB, out _);
+                            // if (!isContains)
+                            //     ecb.AppendToBuffer(entityA, new NearbyEntityBufferElement { Entity = entityB });
                             break;
+                        }
 
                         case StatefulEventState.Exit:
-                            ecb.SetComponent(entityB, new InteractableData { IsLowDistance = false });
+                        {
+                            // var buffer = SystemAPI.GetBuffer<NearbyEntityBufferElement>(entityA);
+                            // var isContains = IsContains(buffer, entityB, out int index);
+                            // if (isContains)
+                            //     buffer.RemoveAt(index);
                             break;
+                        }
                     }
                 }
             }
@@ -50,5 +61,17 @@ namespace InteractableModule.Controller
             ecb.Playback(state.EntityManager);
             ecb.Dispose();
         }
+
+        // private bool IsContains(DynamicBuffer<NearbyEntityBufferElement> buffer, Entity entity, out int index)
+        // {
+        //     for (index = 0; index < buffer.Length; index++)
+        //     {
+        //         if (buffer[index].Entity == entity)
+        //             return true;
+        //     }
+        //
+        //     index = -1;
+        //     return false;
+        // }
     }
 }
